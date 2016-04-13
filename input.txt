@@ -1,0 +1,5 @@
+Name,Age,Gender
+Sameh,23,Male
+Mina,23,Female
+Husseny,23,Male
+sarah,21,Female
