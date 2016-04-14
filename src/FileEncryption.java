@@ -121,108 +121,6 @@ public class FileEncryption {
 		}
 	}
 
-
-	public static Boolean deleteFromTable(String ColumnName, String Value)
-			throws GeneralSecurityException, IOException {
-		FileEncryption x = new FileEncryption();
-		File decryptedData = new File("decryptedData");
-		x.loadKey(new File("encryptAES"), new File("private.der"));
-		x.decrypt(new File("output.txt"), decryptedData);
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(decryptedData));
-		String currentLine;
-		currentLine = bufferedReader.readLine();
-		String[] array = currentLine.split(",");
-		ArrayList<Integer> to_be_deleted = new ArrayList<Integer>();
-		int column = 1;
-		int columnIndex = -1;
-		for (int i = 0; i < array.length; i++) {
-			if (ColumnName.equalsIgnoreCase(array[i])) {
-				columnIndex = i;
-				break;
-			}
-		}
-		if (columnIndex != -1) {
-			while ((currentLine = bufferedReader.readLine()) != null) {
-				String[] tokens = currentLine.split(",");
-				if (tokens[columnIndex].equalsIgnoreCase(Value))
-					to_be_deleted.add(column);
-
-				column++;
-			}
-		}
-		//System.out.print(to_be_deleted.toString());
-
-		BufferedReader reader = new BufferedReader(new FileReader(decryptedData));
-
-		int counter = 0;
-		String new_data = "";
-		while ((currentLine = reader.readLine()) != null)
-			if (!to_be_deleted.contains(counter++))
-				new_data += currentLine + "\n";
-
-		PrintWriter writer = new PrintWriter(decryptedData);
-		writer.print(new_data);
-		writer.close();
-		reader.close();
-
-		x.saveKey(new File("encryptAES"), new File("public.der"));
-		x.encrypt(decryptedData, new File("output.txt"));
-
-		return true;
-
-	}
-
-	public static ArrayList<ArrayList<String>> selectFromTable(String ColumnName, String Value)
-			throws GeneralSecurityException, IOException {
-		ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();
-		FileEncryption x = new FileEncryption();
-		File decryptedData = new File("decryptedData");
-		x.loadKey(new File("encryptAES"), new File("private.der"));
-		x.decrypt(new File("output.txt"), decryptedData);
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(decryptedData));
-
-		String currentLine;
-		currentLine = bufferedReader.readLine();
-		String[] array = currentLine.split(",");
-		int columnIndex = -1;
-		for (int i = 0; i < array.length; i++) {
-			if (ColumnName.equalsIgnoreCase(array[i])) {
-				columnIndex = i;
-				break;
-			}
-		}
-		if (columnIndex != -1) {
-			while ((currentLine = bufferedReader.readLine()) != null) {
-				ArrayList<String> row = new ArrayList<String>();
-				String[] tokens = currentLine.split(",");
-				if (tokens[columnIndex].equalsIgnoreCase(Value)) {
-					for (int i = 0; i < tokens.length; i++) {
-						row.add(tokens[i]);
-					}
-					rows.add(row);
-				}
-			}
-		}
-		return rows;
-
-	}
-
-
-	public static void InsertToTable(String new_record) throws GeneralSecurityException, IOException {
-		FileEncryption x = new FileEncryption();
-		File decryptedData = new File("decryptedData");
-		x.loadKey(new File("encryptAES"), new File("private.der"));
-		x.decrypt(new File("output.txt"), decryptedData);
-		 
-		BufferedWriter  out = new BufferedWriter(new FileWriter("decryptedData",true));
-		out.write( "\n"+new_record);
-		out.close();
-		
-		
-		x.saveKey(new File("encryptAES"), new File("public.der"));
-		x.encrypt(decryptedData, new File("output.txt"));
-	}
-
 	public static void main(String[] args) throws GeneralSecurityException, IOException {
 		FileEncryption x = new FileEncryption();
 
@@ -267,14 +165,13 @@ public class FileEncryption {
 		x.loadKey(encryptedKey, rsaprivate);
 		x.decrypt(output, decryptedData);
 
-		InsertToTable("Alice,23,Female");
+		Insert.InsertToTable("Alice,23,Female");
 
-		ArrayList<ArrayList<String>> row = selectFromTable("Name", "Mina");
+		ArrayList<ArrayList<String>> row = Select.selectFromTable("Name", "Mina");
 		System.out.println(row);
-		row = selectFromTable("Age", "23");
+		row = Select.selectFromTable("Age", "23");
 		System.out.println(row);
 
-
-		deleteFromTable("Gender", "Male");
+		Delete.deleteFromTable("Gender", "Male");
 	}
 }
