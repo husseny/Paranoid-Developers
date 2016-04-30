@@ -41,4 +41,9 @@ public class Select {
 		return rows;
 
 	}
+	public static void main(String args[]) throws GeneralSecurityException, IOException{
+		ArrayList<ArrayList<String>> row = Select.selectFromTable("Name", "Mina");
+		System.out.println(row);
+		Delete.deleteFromTable("Name", "Mina");
+		}
 }

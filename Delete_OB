@@ -1,0 +1,53 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+public class Delete
+{
+  public static void main(String[] paramArrayOfString)
+  {
+    String str = "Male";
+    paramArrayOfString = "Gender";
+    FileEncryption localFileEncryption = new FileEncryption();
+    File localFile = new File("decryptedData");
+    localFileEncryption.loadKey(new File("encryptAES"), new File("private.der"));
+    localFileEncryption.decrypt(new File("output.txt"), localFile);
+    BufferedReader localBufferedReader1;
+    Object localObject = (localBufferedReader1 = new BufferedReader(new FileReader(localFile))).readLine().split(",");
+    ArrayList localArrayList = new ArrayList();
+    int i = 1;
+    int j = -1;
+    for (int k = 0; k < localObject.length; k++) {
+      if (paramArrayOfString.equalsIgnoreCase(localObject[k]))
+      {
+        j = k;
+        break;
+      }
+    }
+    if (j != -1) {
+      while (((localObject = localBufferedReader1.readLine()) != null) && (((String)localObject).contains(",")))
+      {
+        if (localObject.split(",")[j].equalsIgnoreCase(str)) {
+          localArrayList.add(Integer.valueOf(i));
+        }
+        i++;
+      }
+    }
+    BufferedReader localBufferedReader2 = new BufferedReader(new FileReader(localFile));
+    paramArrayOfString = 0;
+    str = "";
+    while ((localObject = localBufferedReader2.readLine()) != null) {
+      if (!localArrayList.contains(Integer.valueOf(paramArrayOfString++))) {
+        str = str + (String)localObject + "\n";
+      }
+    }
+    (paramArrayOfString = new PrintWriter(localFile)).print(str);
+    paramArrayOfString.close();
+    localBufferedReader2.close();
+    localFileEncryption.saveKey(new File("encryptAES"), new File("public.der"));
+    localFileEncryption.encrypt(localFile, new File("output.txt"));
+    Boolean.valueOf(true);
+  }
+}

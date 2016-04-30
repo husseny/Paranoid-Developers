@@ -19,5 +19,12 @@ public class Insert {
 		x.saveKey(new File("encryptAES"), new File("public.der"));
 		x.encrypt(decryptedData, new File("output.txt"));
 	}
+	public static void main(String args[]) throws GeneralSecurityException, IOException{
+		Insert.InsertToTable("Mina,23,Female");
+		Insert.InsertToTable("Minad,23,Female");
+		Insert.InsertToTable("Mina,23,Female");
+		Insert.InsertToTable("Minad,23,male");
+		Insert.InsertToTable("Mina,23,male");
+		}
 
 }

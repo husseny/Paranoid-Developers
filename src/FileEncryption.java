@@ -120,6 +120,7 @@ public class FileEncryption {
 			os.write(b, 0, i);
 		}
 	}
+	
 
 	public static void main(String[] args) throws GeneralSecurityException, IOException {
 		FileEncryption x = new FileEncryption();
@@ -164,14 +165,7 @@ public class FileEncryption {
 
 		x.loadKey(encryptedKey, rsaprivate);
 		x.decrypt(output, decryptedData);
-
-		Insert.InsertToTable("Alice,23,Female");
-
-		ArrayList<ArrayList<String>> row = Select.selectFromTable("Name", "Mina");
-		System.out.println(row);
-		row = Select.selectFromTable("Age", "23");
-		System.out.println(row);
-
-		Delete.deleteFromTable("Gender", "Male");
+		sqlConnection.uploadCode(6, "Developer3", "c.java", "c",true);
+		sqlConnection.downloadCode(6, "dev2.java",true);
 	}
 }
